@@ -5,11 +5,11 @@ export type WorkoutType = {
     order?: number;
   }[];
   id: unknown;
-  date: unknown;
+  date: string;
   xaxisLabel: string;
-  time: unknown;
-  rounds: unknown;
-  comment: unknown;
+  time: number;
+  rounds: string;
+  comment: string;
   calories?: number;
   trainingLoad?: number;
   favorite?: boolean;

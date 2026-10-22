@@ -93,7 +93,10 @@ export default function FavoriteWorkoutCard({
               </Text>
             </View>
           </View>
-          <Text style={styles.date}>{dateLabel}</Text>
+          <Text style={styles.date}>
+            {dateLabel}
+            {workout.time ? ` · ${workout.time} min` : ''}
+          </Text>
         </View>
       </View>
 
