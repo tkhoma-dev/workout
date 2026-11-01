@@ -32,8 +32,9 @@ export function formatPercentComparisonLabel(
 
   const percentChange = ((current - previous) / previous) * 100;
   const rounded = Math.round(percentChange);
-  const sign = rounded > 0 ? '+' : '';
-  return `${sign}${rounded}%`;
+  const normalized = rounded === 0 ? 0 : rounded;
+  const sign = normalized > 0 ? '+' : '';
+  return `${sign}${normalized}%`;
 }
 
 export function buildLoadPercentDelta(

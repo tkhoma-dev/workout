@@ -68,11 +68,19 @@ export default function PeriodOverview({
   heatmapWorkouts,
   monthAnchor,
 }: PeriodOverviewProps): React.JSX.Element {
-  const workoutDelta = `↑ ${buildLoadPercentDelta(workouts, previousWorkouts)}`;
-  const timeDelta = `↑ ${formatTimeDeltaHhMm(
+  const workoutPercentDelta = buildLoadPercentDelta(workouts, previousWorkouts);
+  const workoutIsNegative = workoutPercentDelta.startsWith('-');
+  const workoutDelta = `${workoutIsNegative ? '↓' : '↑'} ${workoutPercentDelta}`;
+  const workoutDeltaColor = workoutIsNegative
+    ? colors.accentRed
+    : colors.accentGreen;
+  const timeDeltaValue = formatTimeDeltaHhMm(
     workouts.statistics.exerciseTime,
     previousWorkouts.statistics.exerciseTime,
-  )}`;
+  );
+  const timeIsNegative = timeDeltaValue.startsWith('-');
+  const timeDelta = `${timeIsNegative ? '↓' : '↑'} ${timeDeltaValue}`;
+  const timeDeltaColor = timeIsNegative ? colors.accentYellow : colors.accentBlue;
   const workoutValue = loading ? '—' : String(workouts.totalElements);
   const timeValue = loading
     ? '—'
@@ -135,7 +143,7 @@ export default function PeriodOverview({
           title="Total Workouts"
           value={workoutValue}
           delta={loading ? '—' : workoutDelta}
-          deltaColor={colors.accentGreen}
+          deltaColor={loading ? colors.textMuted : workoutDeltaColor}
           footer={workoutGoalFooter}
           icon={<DumbbellIcon />}
           iconTint={colors.accentGreenDim}
@@ -145,7 +153,7 @@ export default function PeriodOverview({
           title="Total Time"
           value={timeValue}
           delta={loading ? '—' : timeDelta}
-          deltaColor={colors.accentBlue}
+          deltaColor={loading ? colors.textMuted : timeDeltaColor}
           footer={loading ? '' : formatAvgMinutesPerSession(workouts, periodNoun)}
           icon={<StopwatchIcon />}
           iconTint={colors.accentBlueDim}
