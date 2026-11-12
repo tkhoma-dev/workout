@@ -1,24 +1,17 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import WeeklyDashboardHeader from '../components/WeeklyDashboardHeader';
 
 export default function WeekOverviewScreen(): React.JSX.Element {
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
       <WeeklyDashboardHeader />
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: {
+  container: {
     flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 24,
   },
 });

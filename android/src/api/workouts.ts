@@ -50,6 +50,44 @@ export async function fetchFavorites(): Promise<WorkoutType[]> {
   return response.json() as Promise<WorkoutType[]>;
 }
 
+export async function fetchFlaggedDays(): Promise<string[]> {
+  const response = await fetch(apiUrl('/api/add_flagged'), {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: '',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to load flagged days');
+  }
+
+  const result = await response.json();
+  return Array.isArray(result) ? result : [];
+}
+
+export async function toggleFlaggedDay(day: string): Promise<string[]> {
+  const response = await fetch(apiUrl('/api/add_flagged'), {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: day,
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update flagged day');
+  }
+
+  const result = await response.json();
+  return Array.isArray(result) ? result : [];
+}
+
+export const fetchFlagged = fetchFlaggedDays;
+export const getFlaggedDays = fetchFlaggedDays;
+export const loadFlaggedDays = fetchFlaggedDays;
+export const fetchFavoriteDays = fetchFlaggedDays;
+export const toggleFlagged = toggleFlaggedDay;
+export const addFlaggedDay = toggleFlaggedDay;
+export const toggleFavoriteDay = toggleFlaggedDay;
+
 export async function loadWeekWorkouts(
   startOfPeriod: string,
 ): Promise<WorkoutData> {

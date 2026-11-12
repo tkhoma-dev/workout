@@ -23,6 +23,7 @@ export default function MonthlyDashboardHeader(): React.JSX.Element {
     monthLabel,
     workouts,
     previousWorkouts,
+    flaggedDays,
     loading,
     error,
     canGoPrevious,
@@ -105,6 +106,7 @@ export default function MonthlyDashboardHeader(): React.JSX.Element {
       streakPresentation={streakPresentation}
       heatmapWorkouts={workouts.content}
       monthAnchor={monthAnchor}
+      flaggedDays={flaggedDays}
     />
   );
 }

@@ -65,14 +65,14 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.cardBorder,
-    padding: 16,
-    minHeight: 132,
+    padding: 12,
+    minHeight: 108,
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   title: {
     color: colors.textMuted,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   iconWrap: {
-    width: 36,
-    height: 36,
+    width: 30,
+    height: 30,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     flexWrap: 'nowrap',
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   valueInline: {
     flexDirection: 'row',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   value: {
     color: colors.textPrimary,
-    fontSize: 36,
+    fontSize: 30,
     fontWeight: '700',
     letterSpacing: -0.5,
   },

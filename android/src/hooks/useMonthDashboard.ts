@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {isApiConfigured} from '../config/api';
-import {fetchFirstWorkoutDate, loadMonthWorkouts} from '../api/workouts';
+import {fetchFirstWorkoutDate, fetchFlaggedDays, loadMonthWorkouts} from '../api/workouts';
 import type {WorkoutData} from '../types/workout';
 import {
   formatMonthLabel,
@@ -17,6 +17,7 @@ type MonthDashboardState = {
   monthLabel: string;
   workouts: WorkoutData;
   previousWorkouts: WorkoutData;
+  flaggedDays: string[];
   firstWorkoutDate: string;
   loading: boolean;
   error: string | null;
@@ -36,6 +37,7 @@ export function useMonthDashboard(): MonthDashboardState {
   const [workouts, setWorkouts] = useState<WorkoutData>(emptyWorkoutData);
   const [previousWorkouts, setPreviousWorkouts] =
     useState<WorkoutData>(emptyWorkoutData);
+  const [flaggedDays, setFlaggedDays] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [fetchKey, setFetchKey] = useState(0);
@@ -95,13 +97,15 @@ export function useMonthDashboard(): MonthDashboardState {
     void Promise.all([
       loadMonthWorkouts(startOfPeriod),
       loadMonthWorkouts(previousPeriod).catch(() => emptyWorkoutData()),
+      fetchFlaggedDays().catch(() => []),
     ])
-      .then(([current, previous]) => {
+      .then(([current, previous, flagged]) => {
         if (cancelled) {
           return;
         }
         setWorkouts(current);
         setPreviousWorkouts(previous);
+        setFlaggedDays(Array.isArray(flagged) ? flagged : []);
       })
       .catch(err => {
         if (cancelled) {
@@ -112,6 +116,7 @@ export function useMonthDashboard(): MonthDashboardState {
         setError(message);
         setWorkouts(emptyWorkoutData());
         setPreviousWorkouts(emptyWorkoutData());
+        setFlaggedDays([]);
       })
       .finally(() => {
         if (!cancelled) {
@@ -145,6 +150,7 @@ export function useMonthDashboard(): MonthDashboardState {
     monthLabel,
     workouts,
     previousWorkouts,
+    flaggedDays,
     firstWorkoutDate,
     loading,
     error,

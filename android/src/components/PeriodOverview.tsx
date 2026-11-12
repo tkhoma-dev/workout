@@ -46,6 +46,7 @@ type PeriodOverviewProps = {
   streakPresentation: StreakPresentation;
   heatmapWorkouts: WorkoutType[];
   monthAnchor: Date;
+  flaggedDays?: string[];
 };
 
 export default function PeriodOverview({
@@ -67,6 +68,7 @@ export default function PeriodOverview({
   streakPresentation,
   heatmapWorkouts,
   monthAnchor,
+  flaggedDays,
 }: PeriodOverviewProps): React.JSX.Element {
   const workoutPercentDelta = buildWorkoutCountPercentDelta(
     workouts,
@@ -187,6 +189,8 @@ export default function PeriodOverview({
         workouts={heatmapWorkouts}
         monthAnchor={monthAnchor}
         loading={loading}
+        flaggedDays={flaggedDays}
+        onShift={onShift}
       />
     </View>
   );
@@ -195,14 +199,14 @@ export default function PeriodOverview({
 const styles = StyleSheet.create({
   wrap: {
     paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 16,
+    paddingTop: 4,
+    paddingBottom: 8,
   },
   periodNav: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 12,
   },
   navBtn: {
     width: 40,
@@ -246,7 +250,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   statsRowSecond: {
-    marginTop: 12,
+    marginTop: 8,
   },
   statsGap: {
     width: 12,

@@ -8,7 +8,48 @@ export type HeatmapDay = {
   iso: string;
   intensity: HeatmapIntensity;
   trainingLoad: number;
+  flagged?: boolean;
+  favorite?: boolean;
+  isFlagged?: boolean;
+  isFavorite?: boolean;
 };
+
+export function normalizeFlaggedDays(
+  value: unknown,
+): string[] {
+  if (value == null) {
+    return [];
+  }
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === 'string');
+  }
+  if (value instanceof Set) {
+    return Array.from(value).filter(
+      (item): item is string => typeof item === 'string',
+    );
+  }
+  if (typeof value === 'string') {
+    return [value];
+  }
+  if (typeof value === 'object') {
+    const record = value as Record<string, unknown>;
+    for (const key of [
+      'flaggedDays',
+      'favoriteDays',
+      'flagged',
+      'favorite',
+      'favorites',
+      'days',
+      'flaggedDayList',
+      'favoriteDayList',
+    ]) {
+      if (record[key] != null) {
+        return normalizeFlaggedDays(record[key]);
+      }
+    }
+  }
+  return [];
+}
 
 function loadForWorkout(workout: WorkoutType): number {
   const load = Number(workout.trainingLoad);
@@ -64,11 +105,13 @@ function classifyLoad(
 export function buildMonthHeatmap(
   workouts: WorkoutType[],
   monthAnchor: Date,
+  flaggedDays?: unknown,
 ): HeatmapDay[] {
   const year = monthAnchor.getFullYear();
   const month = monthAnchor.getMonth();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const dailyLoad = aggregateDailyLoad(workouts, monthAnchor);
+  const flagged = new Set(normalizeFlaggedDays(flaggedDays));
   const loads = Array.from(dailyLoad.values()).sort((a, b) => a - b);
 
   const light =
@@ -93,11 +136,16 @@ export function buildMonthHeatmap(
   for (let day = 1; day <= daysInMonth; day++) {
     const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     const trainingLoad = dailyLoad.get(iso) ?? 0;
+    const isFlagged = flagged.has(iso);
     days.push({
       day,
       iso,
       trainingLoad,
       intensity: classifyLoad(trainingLoad, thresholds),
+      flagged: isFlagged,
+      favorite: isFlagged,
+      isFlagged,
+      isFavorite: isFlagged,
     });
   }
 
