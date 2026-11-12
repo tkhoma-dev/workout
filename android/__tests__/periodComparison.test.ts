@@ -2,6 +2,7 @@ import {
   emptyWorkoutData,
   formatPercentComparisonLabel,
   buildLoadPercentDelta,
+  buildWorkoutCountPercentDelta,
   totalTrainingLoad,
 } from '../src/utils/periodComparison';
 
@@ -27,6 +28,20 @@ describe('periodComparison', () => {
 
   it('formatPercentComparisonLabel avoids -0%', () => {
     expect(formatPercentComparisonLabel(10, 10.0001)).toBe('0%');
+  });
+
+  it('buildWorkoutCountPercentDelta compares workout counts, not load', () => {
+    const current = {
+      ...emptyWorkoutData(),
+      content: [{trainingLoad: 100} as any],
+      totalElements: 3,
+    };
+    const previous = {
+      ...emptyWorkoutData(),
+      content: [{trainingLoad: 10} as any],
+      totalElements: 5,
+    };
+    expect(buildWorkoutCountPercentDelta(current, previous)).toBe('-40%');
   });
 
   it('buildLoadPercentDelta uses load when present', () => {

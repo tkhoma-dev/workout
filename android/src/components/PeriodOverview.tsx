@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import type {WorkoutData, WorkoutType} from '../types/workout';
 import {colors} from '../theme';
-import {buildLoadPercentDelta} from '../utils/periodComparison';
+import {buildWorkoutCountPercentDelta} from '../utils/periodComparison';
 import {
   formatAvgCaloriesPerSession,
   formatAvgMinutesPerSession,
@@ -68,7 +68,10 @@ export default function PeriodOverview({
   heatmapWorkouts,
   monthAnchor,
 }: PeriodOverviewProps): React.JSX.Element {
-  const workoutPercentDelta = buildLoadPercentDelta(workouts, previousWorkouts);
+  const workoutPercentDelta = buildWorkoutCountPercentDelta(
+    workouts,
+    previousWorkouts,
+  );
   const workoutIsNegative = workoutPercentDelta.startsWith('-');
   const workoutDelta = `${workoutIsNegative ? '↓' : '↑'} ${workoutPercentDelta}`;
   const workoutDeltaColor = workoutIsNegative

@@ -8,7 +8,7 @@ import WeekOverviewScreen from './src/screens/WeekOverviewScreen';
 import {colors} from './src/theme';
 
 function App(): React.JSX.Element {
-  const [activeTab, setActiveTab] = useState<AppTab>('month');
+  const [activeTab, setActiveTab] = useState<AppTab>('week');
 
   return (
     <SafeAreaProvider>

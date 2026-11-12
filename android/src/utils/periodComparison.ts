@@ -37,6 +37,16 @@ export function formatPercentComparisonLabel(
   return `${sign}${normalized}%`;
 }
 
+export function buildWorkoutCountPercentDelta(
+  current: WorkoutData,
+  previous: WorkoutData,
+): string {
+  return formatPercentComparisonLabel(
+    current.totalElements,
+    previous.totalElements,
+  );
+}
+
 export function buildLoadPercentDelta(
   current: WorkoutData,
   previous: WorkoutData,

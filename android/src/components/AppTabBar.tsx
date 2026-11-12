@@ -19,14 +19,14 @@ export default function AppTabBar({
   return (
     <View style={[styles.bar, {paddingBottom: Math.max(insets.bottom, 8)}]}>
       <TabButton
-        label="Week Overview"
-        active={activeTab === 'week'}
-        onPress={() => onChange('week')}
-      />
-      <TabButton
         label="Month Overview"
         active={activeTab === 'month'}
         onPress={() => onChange('month')}
+      />
+      <TabButton
+        label="Week Overview"
+        active={activeTab === 'week'}
+        onPress={() => onChange('week')}
       />
       <TabButton
         label="Favorites"
