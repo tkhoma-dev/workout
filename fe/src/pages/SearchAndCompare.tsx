@@ -84,6 +84,7 @@ function SearchWorkoutsSection({
           workouts={displayWorkouts}
           showCheckbox
           selectWorkout={selectWorkout}
+          heightClass="max-h-[35rem]"
         />
       </div>
       <div className="w-full flex mt-8">

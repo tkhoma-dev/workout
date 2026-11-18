@@ -11,25 +11,28 @@ interface WorkoutDetailProps {
 	selectWorkout: (workout: any, checked: boolean) => void;
 	showCheckbox?: boolean;
 	refreshWorkouts?: () => void;
+	heightClass?: string;
 }
 
 export default function WorkoutDetail({
 	workouts,
 	selectWorkout,
 	showCheckbox = false,
-	refreshWorkouts = () => {}
+	refreshWorkouts = () => {},
+	heightClass,
 }: WorkoutDetailProps) {
 	const [leftSelected, setLeftSelected] = useState(null)
 	const [rightSelected, setRightSelected] = useState(null)
 
 	const scrollBody = workouts.length > SCROLL_THRESHOLD
+	const resolvedHeightClass = heightClass ?? 'max-h-[25rem]'
 
 	return (
 		<>
 			<div
 				className={
 					scrollBody
-						? 'w-[90%] ml-6 mt-4 max-h-[25rem] overflow-y-auto overscroll-y-contain'
+						? `w-[90%] ml-6 mt-4 ${resolvedHeightClass} overflow-y-auto overscroll-y-contain`
 						: 'w-[90%] ml-6 mt-4'
 				}
 			>
