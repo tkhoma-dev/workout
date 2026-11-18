@@ -5,7 +5,7 @@ import type { ExerciseNameOption, WorkoutType } from "@/types";
 import WorkoutDetail from "@/components/general/WorkoutDetail";
 import WorkoutPieChart from "@/components/general/UI/chart/WorkoutPieChart";
 import { BsFlagFill } from "react-icons/bs";
-import { MdSearch } from "react-icons/md";
+import { MdSearch, MdStar } from "react-icons/md";
 import { apiUrl } from "@/utils/http";
 import { loadExerciseOptions } from "@/pages/new_workout/exercisesLoader";
 
@@ -33,6 +33,15 @@ function loadSearchWorkouts(
 
 function loadFlaggedWorkouts(): Promise<WorkoutType[]> {
   return fetch(apiUrl("/api/flagged")).then((response) => {
+    if (!response.ok) {
+      throw new Response("Not Found", { status: 404 });
+    }
+    return response.json() as Promise<WorkoutType[]>;
+  });
+}
+
+function loadFavoriteWorkouts(): Promise<WorkoutType[]> {
+  return fetch(apiUrl("/api/favorites")).then((response) => {
     if (!response.ok) {
       throw new Response("Not Found", { status: 404 });
     }
@@ -110,6 +119,7 @@ const SearchAndCompare = () => {
   const [onlySelected, setOnlySelected] = useState(false);
   const [workouts, setWorkouts] = useState<WorkoutType[] | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [showingFavorites, setShowingFavorites] = useState(false);
 
   const search = async () => {
     setLoading(true);
@@ -124,11 +134,18 @@ const SearchAndCompare = () => {
     }
   };
 
-  const showFlagged = async () => {
+  const toggleFavoritesFlagged = async () => {
     setLoading(true);
     try {
-      const data = await loadFlaggedWorkouts();
-      setWorkouts(data);
+      if (showingFavorites) {
+        const data = await loadFlaggedWorkouts();
+        setWorkouts(data);
+        setShowingFavorites(false);
+      } else {
+        const data = await loadFavoriteWorkouts();
+        setWorkouts(data);
+        setShowingFavorites(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -183,11 +200,13 @@ const SearchAndCompare = () => {
           </span>
           <span className="text-white">Search</span>
         </Button>
-        <Button type="default" onClick={showFlagged} loading={loading}>
+        <Button type="default" onClick={toggleFavoritesFlagged} loading={loading}>
           <span className="text-red-600 mr-2">
-            <BsFlagFill />
+            {showingFavorites ? <BsFlagFill /> : <MdStar />}
           </span>
-          <span className="text-sky-600">Show Flagged</span>
+          <span className="text-sky-600">
+            {showingFavorites ? "Show Flagged" : "Show Favorites"}
+          </span>
         </Button>
       </div>
       <Suspense fallback={<SearchResultsLoading />}>
